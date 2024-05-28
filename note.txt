@@ -1,6 +1,0 @@
-page admin	:
-			Product
-			Category
-			Login
-			Order
-				Detail
