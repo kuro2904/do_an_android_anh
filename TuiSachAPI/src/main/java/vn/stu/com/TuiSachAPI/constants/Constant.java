@@ -9,4 +9,11 @@ public class Constant {
     public static String nullError(String type){
         return type + " is null";
     }
+    public static String notFoundError(String type){
+        return type + " is not found";
+    }
+
+    public static String createdSuccess(String type){
+        return type + " created success";
+    }
 }

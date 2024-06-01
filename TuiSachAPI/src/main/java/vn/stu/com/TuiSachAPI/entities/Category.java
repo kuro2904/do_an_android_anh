@@ -16,12 +16,6 @@ public class Category {
 
     public Category() {}
 
-    public Category(int id, String name, List<Product> products) {
-        this.id = id;
-        this.name = name;
-        this.products = products;
-    }
-
     public int getId() {
         return id;
     }

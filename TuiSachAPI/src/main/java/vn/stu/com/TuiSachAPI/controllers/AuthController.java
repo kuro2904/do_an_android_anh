@@ -37,11 +37,11 @@ public class AuthController {
 
     @PostMapping("register")
     public ResponseEntity<ResponseDTO<UserDTO>> register(@RequestBody UserDTO userDTO) {
-        if (userDTO.getPhoneNumber() == null || userDTO.getPhoneNumber().isEmpty())
+        if (userDTO.phoneNumber() == null || userDTO.phoneNumber().isEmpty())
             return ResponseEntity.badRequest().body(new ResponseDTO<>(null, 0, nullError("Phone number")));
-        if (userDTO.getPassword() == null || userDTO.getPassword().isEmpty())
+        if (userDTO.password() == null || userDTO.password().isEmpty())
             return ResponseEntity.badRequest().body(new ResponseDTO<>(null, 0, nullError("Password")));
-        if (userDTO.getUserName() == null || userDTO.getUserName().isEmpty())
+        if (userDTO.userName() == null || userDTO.userName().isEmpty())
             return ResponseEntity.badRequest().body(new ResponseDTO<>(null, 0, nullError("User name")));
         return new ResponseEntity<>(authService.register(userDTO), HttpStatus.CREATED);
     }

@@ -7,7 +7,8 @@ import java.util.List;
 @Entity
 @Table(name = "t_product")
 public class Product {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String description;
@@ -18,15 +19,24 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductDetail> details;
 
-    public Product() {}
+    public Product() {
+    }
 
-    public Product(int id, String name, String description, double price, Category category, List<ProductDetail> details) {
-        this.id = id;
-        this.name = name;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
-        this.price = price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
         this.category = category;
-        this.details = details;
     }
 
     public int getId() {
