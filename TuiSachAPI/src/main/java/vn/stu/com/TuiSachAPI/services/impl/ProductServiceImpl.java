@@ -5,10 +5,12 @@ import org.springframework.transaction.annotation.Transactional;
 import vn.stu.com.TuiSachAPI.dtos.ProductDTO;
 import vn.stu.com.TuiSachAPI.dtos.ResponseDTO;
 import vn.stu.com.TuiSachAPI.entities.Category;
+import vn.stu.com.TuiSachAPI.entities.Image;
 import vn.stu.com.TuiSachAPI.entities.Product;
 import vn.stu.com.TuiSachAPI.entities.ProductDetail;
 import vn.stu.com.TuiSachAPI.mappers.ProductMapper;
 import vn.stu.com.TuiSachAPI.repositories.CategoryRepository;
+import vn.stu.com.TuiSachAPI.repositories.ImageRepository;
 import vn.stu.com.TuiSachAPI.repositories.ProductDetailRepository;
 import vn.stu.com.TuiSachAPI.repositories.ProductRepository;
 import vn.stu.com.TuiSachAPI.services.ProductService;
@@ -26,12 +28,14 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
     private final ProductDetailRepository productDetailRepository;
     private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, ProductDetailRepository productDetailRepository, ProductMapper productMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, ImageRepository imageRepository, ProductDetailRepository productDetailRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.imageRepository = imageRepository;
         this.productDetailRepository = productDetailRepository;
         this.productMapper = productMapper;
     }
@@ -57,13 +61,23 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(dto.description());
 
         List<ProductDetail> details = new ArrayList<>();
+
         dto.details().forEach(d -> {
+
             ProductDetail productDetail = new ProductDetail();
             productDetail.setProduct(product);
             productDetail.setColor(d.color());
             productDetail.setSize(d.size());
             productDetail.setQuantity(d.quantity());
+
+            Image image = new Image();
+
+            productDetail.setImage(image);
+
             details.add(productDetailRepository.save(productDetail));
+            image.setPath(d.imagePath());
+            image.setProductDetail(productDetail);
+            imageRepository.save(image);
         });
         product.setDetails(details);
         return new ResponseDTO<>(productMapper.toProductDTO(productRepository.save(product)), 1, createdSuccess("Product"));

@@ -6,10 +6,16 @@ import 'components/home_header.dart';
 import 'components/popular_product.dart';
 import 'components/special_offers.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static String routeName = "/home";
 
   const HomeScreen({super.key});
+  @override
+  State<StatefulWidget> createState() => HomeScreenState();
+}
+
+
+class HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -23,7 +29,7 @@ class HomeScreen extends StatelessWidget {
               Categories(),
               SpecialOffers(),
               SizedBox(height: 20),
-              PopularProducts(),
+              PopularProducts(products: [],),
               SizedBox(height: 20),
             ],
           ),
@@ -31,4 +37,5 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
 }

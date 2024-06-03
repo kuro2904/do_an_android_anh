@@ -4,6 +4,7 @@ public record ProductDetailDTO(
         int id,
         String size,
         String color,
-        int quantity
+        int quantity,
+        String imagePath
 ) {
 }

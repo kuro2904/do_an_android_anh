@@ -26,7 +26,8 @@ public class ProductMapper {
                 productDetail.getId(),
                 productDetail.getSize(),
                 productDetail.getColor(),
-                productDetail.getQuantity()
+                productDetail.getQuantity(),
+                productDetail.getImage().getPath()
         );
     }
 

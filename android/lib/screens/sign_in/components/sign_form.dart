@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/models/response_dto.dart';
-import 'package:shop_app/models/user.dart';
+import 'package:shop_app/models/user/user.dart';
 
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
@@ -43,8 +43,8 @@ class _SignFormState extends State<SignForm> {
     }
   }
 
-  void navigateToLogin(bool isLogin){
-    if(isLogin){
+  void navigateToLogin(bool isLogin) {
+    if (isLogin) {
       Navigator.pushNamed(context, LoginSuccessScreen.routeName);
     }
   }

@@ -13,15 +13,26 @@ public class ProductDetail {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+    @OneToOne(mappedBy = "productDetail")
+    private Image image;
 
     public ProductDetail() {}
 
-    public ProductDetail(int id, String size, String color, int quantity, Product product) {
+    public ProductDetail(int id, String size, String color, int quantity, Product product, Image image) {
         this.id = id;
         this.size = size;
         this.color = color;
         this.quantity = quantity;
         this.product = product;
+        this.image = image;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public int getId() {

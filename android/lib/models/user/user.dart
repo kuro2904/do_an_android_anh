@@ -1,5 +1,5 @@
 class User{
-  late final int id;
+  late final int? id;
   late final String userName;
   late final String password;
   late final String role;

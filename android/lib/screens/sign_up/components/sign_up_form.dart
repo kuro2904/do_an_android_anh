@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/user.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop_app/models/user/user_request.dart';
+import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
 import '../../login_success/login_success_screen.dart';
-import 'package:http/http.dart' as http;
-
-import '../../sign_in/sign_in_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -43,23 +42,21 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
-  void navigateToLogin(bool isLogin){
-    if(isLogin){
-      Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-    }
+  void navigateToLogin() {
+    Navigator.pop(context);
   }
 
-  Future<void> _register(User user) async {
-    var body = {'usernameOrPhoneNumber': userName, 'password': password};
-    Uri url = Uri.parse(loginString);
+  Future<void> _register(UserRequest userReq) async {
+    var body = {'userName': userReq.userName, 'password': userReq.password, 'phoneNumber': userReq.phoneNumber};
+    Uri url = Uri.parse(registerString);
 
     var response = await http.post(url,
         headers: {'Content-Type': 'application/json'}, body: json.encode(body));
 
-
-
+    if (response.statusCode == 201) {
+      navigateToLogin();
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +98,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 removeError(error: kPhoneNullError);
               } else if (value.isNotEmpty && value.length >= 10) {
                 removeError(error: kPhoneValidError);
-              }else if(value.isNotEmpty && phoneValidNumberRegExp.hasMatch(value)){
+              } else if (value.isNotEmpty &&
+                  phoneValidNumberRegExp.hasMatch(value)) {
                 removeError(error: kPhoneValidNumberError);
               }
               return;
@@ -113,8 +111,8 @@ class _SignUpFormState extends State<SignUpForm> {
               } else if (value.isNotEmpty && value.length < 10) {
                 addError(error: kPhoneValidError);
                 return "";
-              }
-              else if(value.isNotEmpty && !phoneValidNumberRegExp.hasMatch(value)){
+              } else if (value.isNotEmpty &&
+                  !phoneValidNumberRegExp.hasMatch(value)) {
                 addError(error: kPhoneValidNumberError);
                 return "";
               }
@@ -197,8 +195,8 @@ class _SignUpFormState extends State<SignUpForm> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                Navigator.pushNamed(context, SignInScreen.routeName);
+                var user = UserRequest(userName: userName!, password: password!, phoneNumber: phoneNumber!);
+                _register(user);
               }
             },
             child: const Text("Continue"),

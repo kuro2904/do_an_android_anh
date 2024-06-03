@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/user.dart';
+import 'package:shop_app/models/user/user.dart';
 
 late User currUser;
 
@@ -56,3 +56,4 @@ OutlineInputBorder outlineInputBorder() {
 
 const String ip = '192.168.1.7';
 const String loginString = 'http://$ip:8080/api/v1/auth/login';
+const String registerString = 'http://$ip:8080/api/v1/auth/register';
