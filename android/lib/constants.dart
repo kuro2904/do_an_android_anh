@@ -40,6 +40,7 @@ const String kNamelNullError = "Please Enter your name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
 
+
 final otpInputDecoration = InputDecoration(
   contentPadding: const EdgeInsets.symmetric(vertical: 16),
   border: outlineInputBorder(),
@@ -54,6 +55,8 @@ OutlineInputBorder outlineInputBorder() {
   );
 }
 
-const String ip = '192.168.1.7';
+const String ip = '192.168.2.17';
 const String loginString = 'http://$ip:8080/api/v1/auth/login';
 const String registerString = 'http://$ip:8080/api/v1/auth/register';
+const String productString = 'http://$ip:8080/api/v1/products';
+const String categoryString = 'http://$ip:8080/api/v1/categories';

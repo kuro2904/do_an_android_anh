@@ -71,34 +71,34 @@ public class DataSeedRunner implements CommandLineRunner {
 
         // Create images
         Image image1 = new Image();
-        image1.setPath("image1");
+        image1.setPath("image1.jpg");
 
         Image image2 = new Image();
-        image2.setPath("image2");
+        image2.setPath("image2.jpg");
 
         Image image3 = new Image();
-        image3.setPath("image3");
+        image3.setPath("image3.jpg");
 
         Image image4 = new Image();
-        image4.setPath("image4");
+        image4.setPath("image4.jpg");
 
         Image image5 = new Image();
-        image5.setPath("image5");
+        image5.setPath("image5.jpg");
 
         Image image6 = new Image();
-        image6.setPath("image6");
+        image6.setPath("image6.jpg");
 
         Image image7 = new Image();
-        image7.setPath("image7");
+        image7.setPath("image7.jpg");
 
         Image image8 = new Image();
-        image8.setPath("image8");
+        image8.setPath("image8.jpg");
 
         Image image9 = new Image();
-        image9.setPath("image9");
+        image9.setPath("image9.jpg");
 
         Image image10 = new Image();
-        image10.setPath("image10");
+        image10.setPath("image10.jpg");
 
 // Create products
         Product product1 = new Product();

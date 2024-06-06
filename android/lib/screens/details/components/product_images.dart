@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import '../../../models_demo/Product.dart';
+import '../../../models/product/product.dart';
+
 
 class ProductImages extends StatefulWidget {
   const ProductImages({
@@ -25,7 +26,7 @@ class _ProductImagesState extends State<ProductImages> {
           width: 238,
           child: AspectRatio(
             aspectRatio: 1,
-            child: Image.asset(widget.product.images[selectedImage]),
+            child: Image.asset(widget.product.details[selectedImage].imagePath),
           ),
         ),
         // SizedBox(height: 20),
@@ -33,7 +34,7 @@ class _ProductImagesState extends State<ProductImages> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ...List.generate(
-              widget.product.images.length,
+              widget.product.details.length,
               (index) => SmallProductImage(
                 isSelected: index == selectedImage,
                 press: () {
@@ -41,7 +42,7 @@ class _ProductImagesState extends State<ProductImages> {
                     selectedImage = index;
                   });
                 },
-                image: widget.product.images[index],
+                image: widget.product.details[index].imagePath,
               ),
             ),
           ],

@@ -1,5 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import '../../constants.dart';
+import '../../models/product/product.dart';
 import 'components/categories.dart';
 import 'components/discount_banner.dart';
 import 'components/home_header.dart';
@@ -16,21 +21,54 @@ class HomeScreen extends StatefulWidget {
 
 
 class HomeScreenState extends State<HomeScreen>{
+  List<Product> products = [];
+
+  @override
+  void initState() {
+    fetchFutureProducts();
+    super.initState();
+  }
+
+  Future<void> fetchFutureProducts() async{
+    Uri url = Uri.parse(productString);
+
+    var response = await http.get(url);
+
+    if(response.statusCode == 200){
+      parseProduct(response.body);
+    }
+    throw Exception("Cannot Fetch Products");
+  }
+
+  parseProduct(String responseBody){
+    var parser = json.decode(responseBody);
+    List<dynamic> data = parser['data'];
+
+    List<Product> productData = data.map((item) {
+      return Product.fromJson(item as Map<String, dynamic>);
+    }).toList();
+    print(productData);
+    setState(() {
+      products = productData;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: Column(
             children: [
-              HomeHeader(),
-              DiscountBanner(),
-              Categories(),
-              SpecialOffers(),
-              SizedBox(height: 20),
-              PopularProducts(products: [],),
-              SizedBox(height: 20),
+              const HomeHeader(),
+              const DiscountBanner(),
+              const Categories(),
+              const SpecialOffers(),
+              const SizedBox(height: 20),
+              PopularProducts(products: products),
+              const SizedBox(height: 20),
             ],
           ),
         ),
