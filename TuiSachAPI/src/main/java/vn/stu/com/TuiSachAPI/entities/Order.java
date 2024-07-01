@@ -3,6 +3,7 @@ package vn.stu.com.TuiSachAPI.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "order")
-    private List<OrderDetail> details;
+    private List<OrderDetail> details = new ArrayList<>();
     private double total;
 
     public Order() {}
@@ -29,6 +30,22 @@ public class Order {
         this.user = user;
         this.details = details;
         this.total = total;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getId() {

@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import '../../../models/product/product.dart';
 
-class ProductDescription extends StatelessWidget {
+class ProductDescription extends StatefulWidget {
   const ProductDescription({
     Key? key,
     required this.product,
-    this.pressOnSeeMore,
+    required this.onVariantSelected, // Add this line
+    required this.onQuantitySelected
   }) : super(key: key);
 
   final Product product;
-  final GestureTapCallback? pressOnSeeMore;
+  final ValueChanged<int> onVariantSelected; // Add this line
+  final ValueChanged<int> onQuantitySelected;
+
+  @override
+  State<ProductDescription> createState() => _ProductDescriptionState();
+}
+
+class _ProductDescriptionState extends State<ProductDescription> {
+  List<bool> isSelected = [];
+  int? selectedIndex;
+  int quantity = 1; // Add this line
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize isSelected with false for each variant
+    isSelected = List.generate(widget.product.details.length, (index) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +38,19 @@ class ProductDescription extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              product.name,
+              widget.product.name,
               style: Theme.of(context).textTheme.displayMedium,
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20, right: 64, bottom: 10),
             child: SizedBox(
-              height: 200, // Set a fixed height for the PageView
+              height: 200,
               child: PageView.builder(
-                itemCount: product.details.length,
+                itemCount: widget.product.details.length,
                 itemBuilder: (context, index) {
-                  return Image.asset('assets/images/${product.details[index].imagePath}');
+                  return Image.asset(
+                      'assets/images/${widget.product.details[index].imagePath}');
                 },
                 scrollDirection: Axis.horizontal,
               ),
@@ -40,59 +59,100 @@ class ProductDescription extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-              '${product.price} VND',
-              style: Theme.of(context).textTheme.titleSmall,
+              '${widget.product.price} VND',
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-              product.description,
+              widget.product.description,
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-              'Colors',
+              'Available',
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
           SizedBox(
-            height: 40,
-            child: ListView.builder(
+            height: 80,
+            child: ListView(
               padding: const EdgeInsets.all(10),
               scrollDirection: Axis.horizontal,
-              itemCount: product.details.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Text(product.details[index].color),
-                );
-              },
+              children: [
+                ToggleButtons(
+                  borderColor: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                  isSelected: isSelected,
+                  onPressed: (int index) {
+                    setState(() {
+                      for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                        if (buttonIndex == index) {
+                          isSelected[buttonIndex] = !isSelected[buttonIndex];
+                        } else {
+                          isSelected[buttonIndex] = false;
+                        }
+                      }
+                      selectedIndex = index;
+                      widget.onVariantSelected(index); // Notify parent widget
+                    });
+                  },
+                  children: widget.product.details.map((detail) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Text(
+                        '${detail.size} - ${detail.color}',
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    );
+                  }).toList(),
+                )
+              ],
             ),
           ),
+
           Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              'Sizes',
-              style: Theme.of(context).textTheme.titleSmall,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    'Quantity',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.remove),
+                  onPressed: () {
+                    setState(() {
+                      if (quantity > 1) {
+                        quantity--;
+                        widget.onQuantitySelected(quantity);
+                      }
+                    });
+                  },
+                ),
+                Text(
+                  '$quantity',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    setState(() {
+                      quantity++;
+                      widget.onQuantitySelected(quantity);
+                    });
+                  },
+                ),
+              ],
             ),
           ),
-          SizedBox(
-            height: 40,
-            child: ListView.builder(
-              padding: const EdgeInsets.all(10),
-              scrollDirection: Axis.horizontal,
-              itemCount: product.details.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Text(product.details[index].size),
-                );
-              },
-            ),
-          ),
+          const SizedBox(height: 20),
         ],
       ),
     );

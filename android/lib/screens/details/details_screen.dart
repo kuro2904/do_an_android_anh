@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 
@@ -5,16 +7,25 @@ import '../../models/product/product.dart';
 import 'components/product_description.dart';
 import 'components/top_rounded_container.dart';
 
-class DetailsScreen extends StatelessWidget {
+class DetailsScreen extends StatefulWidget {
   static String routeName = "/details";
 
   const DetailsScreen({super.key});
 
   @override
+  State<DetailsScreen> createState() => _DetailsScreenState();
+}
+
+class _DetailsScreenState extends State<DetailsScreen> {
+  int? selectedVariantIndex;
+  int selectedQuantity = 1;
+
+  @override
   Widget build(BuildContext context) {
     final ProductDetailsArguments args =
-        ModalRoute.of(context)!.settings.arguments as ProductDetailsArguments;
+    ModalRoute.of(context)!.settings.arguments as ProductDetailsArguments;
     final product = args.product;
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -32,7 +43,16 @@ class DetailsScreen extends StatelessWidget {
               children: [
                 ProductDescription(
                   product: product,
-                  pressOnSeeMore: () {},
+                  onVariantSelected: (int index) {
+                    setState(() {
+                      selectedVariantIndex = index;
+                    });
+                  },
+                  onQuantitySelected: (int quantity){
+                    setState(() {
+                      selectedQuantity = quantity;
+                    });
+                  },
                 ),
               ],
             ),
@@ -45,9 +65,10 @@ class DetailsScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: selectedVariantIndex != null ? () {
+                addToCard(product, selectedVariantIndex!, selectedQuantity);
                 Navigator.pushNamed(context, CartScreen.routeName);
-              },
+              } : null,
               child: const Text("Add To Cart"),
             ),
           ),
@@ -55,7 +76,15 @@ class DetailsScreen extends StatelessWidget {
       ),
     );
   }
+
+  void addToCard(Product product, int variantIndex, int quantity) {
+    final selectedVariant = product.details[variantIndex];
+    print("Selected Item: ${selectedVariant.id} quantity: $quantity");
+    // Add the selectedVariant and quantity to the cart
+  }
 }
+
+
 
 class ProductDetailsArguments {
   final Product product;
