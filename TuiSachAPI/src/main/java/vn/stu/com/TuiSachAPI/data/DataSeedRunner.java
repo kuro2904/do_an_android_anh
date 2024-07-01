@@ -182,13 +182,16 @@ public class DataSeedRunner implements CommandLineRunner {
         order = orderRepository.save(order);
         user1.getOrderList().add(order);
         OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setOrder(order);
         orderDetail.setQuantity(300);
         orderDetail.setPrice(4.2);
         orderDetail.setProduct(productDetail1);
         OrderDetail orderDetail2 = new OrderDetail();
-        orderDetail.setQuantity(300);
-        orderDetail.setPrice(4.2);
-        orderDetail.setProduct(productDetail2);
+        orderDetail2.setQuantity(300);
+        orderDetail2.setPrice(4.2);
+        orderDetail2.setProduct(productDetail2);
+        orderDetail2.setOrder(order);
+
 
         order.getDetails().addAll(orderDetailRepository.saveAll(List.of(orderDetail, orderDetail2)));
         userRepository.save(user1);

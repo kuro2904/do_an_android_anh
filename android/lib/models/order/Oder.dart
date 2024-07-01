@@ -15,3 +15,4 @@ class Order {
       required this.total,
       required this.detail});
 }
+

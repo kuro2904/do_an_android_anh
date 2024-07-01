@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shop_app/models/order/OrderDetail.dart';
+import 'package:shop_app/models/product/product_detail.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 
 import '../../models/product/product.dart';
@@ -79,7 +81,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   void addToCard(Product product, int variantIndex, int quantity) {
     final selectedVariant = product.details[variantIndex];
-    print("Selected Product: ${product.name} and Item: ${selectedVariant.id} quantity: $quantity");
+    userOrderDetail.add(
+        OrderDetail(product: product, quantity: quantity, price: product.price, detail: selectedVariant)
+    );
 
   }
 }

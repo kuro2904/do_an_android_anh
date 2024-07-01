@@ -1,9 +1,14 @@
+import 'package:shop_app/models/product/product.dart';
+import 'package:shop_app/models/product/product_detail.dart';
+
 class OrderDetail{
-  final String productName;
-  final int productId;
+  final Product product;
+  final Detail detail;
   final int quantity;
   final double price;
 
-  OrderDetail({required this.productName, required this.productId, required this.quantity, required this.price});
+  OrderDetail({required this.product, required this.detail, required this.quantity, required this.price});
 
 }
+
+List<OrderDetail> userOrderDetail = [];

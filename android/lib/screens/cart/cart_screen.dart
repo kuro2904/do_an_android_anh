@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../../models_demo/Cart.dart';
+import '../../models/order/OrderDetail.dart';
 import 'components/cart_card.dart';
 import 'components/check_out_card.dart';
 
@@ -26,7 +25,7 @@ class _CartScreenState extends State<CartScreen> {
               style: TextStyle(color: Colors.black),
             ),
             Text(
-              "${demoCarts.length} items",
+              "${userOrderDetail.length} items",
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
@@ -35,15 +34,15 @@ class _CartScreenState extends State<CartScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView.builder(
-          itemCount: demoCarts.length,
+          itemCount: userOrderDetail.length,
           itemBuilder: (context, index) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Dismissible(
-              key: Key(demoCarts[index].product.id.toString()),
+              key: Key(userOrderDetail[index].product.id.toString()),
               direction: DismissDirection.endToStart,
               onDismissed: (direction) {
                 setState(() {
-                  demoCarts.removeAt(index);
+                  userOrderDetail.removeAt(index);
                 });
               },
               background: Container(
@@ -59,7 +58,7 @@ class _CartScreenState extends State<CartScreen> {
                   ],
                 ),
               ),
-              child: CartCard(cart: demoCarts[index]),
+              child: CartCard(detail: userOrderDetail[index]),
             ),
           ),
         ),
