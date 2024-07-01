@@ -79,8 +79,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   void addToCard(Product product, int variantIndex, int quantity) {
     final selectedVariant = product.details[variantIndex];
-    print("Selected Item: ${selectedVariant.id} quantity: $quantity");
-    // Add the selectedVariant and quantity to the cart
+    print("Selected Product: ${product.name} and Item: ${selectedVariant.id} quantity: $quantity");
+
   }
 }
 

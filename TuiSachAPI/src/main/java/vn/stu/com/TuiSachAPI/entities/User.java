@@ -3,6 +3,7 @@ package vn.stu.com.TuiSachAPI.entities;
 import jakarta.persistence.*;
 import vn.stu.com.TuiSachAPI.dtos.UserDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
     @OneToMany(mappedBy = "user")
-    private List<Order> orderList;
+    private List<Order> orderList = new ArrayList<Order>();
 
     public User(){}
 

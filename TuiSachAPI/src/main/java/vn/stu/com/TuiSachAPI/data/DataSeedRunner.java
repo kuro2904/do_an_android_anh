@@ -16,14 +16,18 @@ public class DataSeedRunner implements CommandLineRunner {
     private final ImageRepository imageRepository;
     private final ProductDetailRepository productDetailRepository;
     private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
-    public DataSeedRunner(RoleRepository roleRepository, UserRepository userRepository, CategoryRepository categoryRepository, ImageRepository imageRepository, ProductDetailRepository productDetailRepository, ProductRepository productRepository) {
+    public DataSeedRunner(RoleRepository roleRepository, UserRepository userRepository, CategoryRepository categoryRepository, ImageRepository imageRepository, ProductDetailRepository productDetailRepository, ProductRepository productRepository, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.imageRepository = imageRepository;
         this.productDetailRepository = productDetailRepository;
         this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
+        this.orderDetailRepository = orderDetailRepository;
     }
 
     @Override
@@ -167,6 +171,28 @@ public class DataSeedRunner implements CommandLineRunner {
 // Save images
         imageRepository.saveAll(List.of(image1, image2, image3, image4, image5, image6, image7, image8, image9, image10));
 
+
+        // Order
+
+        Order order = new Order();
+        order.setAddress("Addres1");
+        order.setPhone("1234567890");
+        order.setUser(user1);
+
+        order = orderRepository.save(order);
+        user1.getOrderList().add(order);
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setQuantity(300);
+        orderDetail.setPrice(4.2);
+        orderDetail.setProduct(productDetail1);
+        OrderDetail orderDetail2 = new OrderDetail();
+        orderDetail.setQuantity(300);
+        orderDetail.setPrice(4.2);
+        orderDetail.setProduct(productDetail2);
+
+        order.getDetails().addAll(orderDetailRepository.saveAll(List.of(orderDetail, orderDetail2)));
+        userRepository.save(user1);
+        orderRepository.save(order);
 
     }
 }
